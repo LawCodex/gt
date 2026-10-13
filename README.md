@@ -16,7 +16,7 @@ Status: **partial** — see "What is NOT covered".
 | Category | Directory | Files |
 |---|---|---|
 | Constitución Política de la República de Guatemala (1985, with the 1993 reforms) | `constitucion/` | 1 |
-| Decretos del Congreso (laws, codes, approvals), by year | `decretos/<year>/decreto-<nnn>-<year>.md` |      469 |
+| Decretos del Congreso (laws, codes, approvals), by year | `decretos/<year>/decreto-<nnn>-<year>.md` | 469 |
 
 The Congreso publishes each decree as a PDF at
 `https://www.congreso.gob.gt/assets/uploads/info_legislativo/decretos/<file>.pdf`. The Internet
