@@ -158,6 +158,7 @@ class Builder:
         self.last_heading = None
         self.open = {}
         self.sec_inside = [0, 0]
+        self.sec_tit = 0
         self.has_disp = False
 
     def flush(self):
@@ -178,7 +179,12 @@ class Builder:
         if kind == "DISP":
             self.has_disp = True
         if kind == "SECCION":
-            self.sec_inside[1 if self.open.get("CAPITULO") else 0] += 1
+            if self.open.get("CAPITULO"):
+                self.sec_inside[1] += 1
+            elif self.open.get("TITULO"):
+                self.sec_tit += 1
+            else:
+                self.sec_inside[0] += 1
         elif r:
             for k in list(self.open):
                 if RANK.get(k, 0) >= r:
@@ -190,8 +196,11 @@ class Builder:
     def finish(self):
         self.flush()
         rank = dict(RANK)
-        if self.sec_inside[1] > self.sec_inside[0]:
+        top, in_cap, in_tit = self.sec_inside[0], self.sec_inside[1], self.sec_tit
+        if in_cap > top and in_cap >= in_tit:
             rank["SECCION"] = 5.5
+        elif in_tit > top:
+            rank["SECCION"] = 4.7
         used = sorted({rank[k] for k, _ in (o for o in self.out if isinstance(o, tuple)) if k in rank})
         lvl = {r: min(2 + i, self.max_level) for i, r in enumerate(used)}
         res = []
